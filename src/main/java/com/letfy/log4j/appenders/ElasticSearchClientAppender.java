@@ -273,7 +273,12 @@ public class ElasticSearchClientAppender extends AppenderSkeleton {
                     writeThrowable(data, loggingEvent);
                     writeMDC(data, loggingEvent);
                     // insert the document into elasticsearch
-                    Index index = new Index.Builder(data).index(getElasticIndex()).type(getElasticType()).id(uuid).build();
+                    Index index = new Index.Builder(data)
+                        .index(getElasticIndex())
+                        .type(getElasticType())
+                        .setHeader("Content-Type", "application/json")
+                        .id(uuid)
+                        .build();
                     client.execute(index);
                 }
             } catch (Exception ex) {
